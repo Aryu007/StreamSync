@@ -2,7 +2,6 @@ import { upsertStreamUser } from '../lib/stream.js';
 import User from  '../models/User.js';
 import jwt from 'jsonwebtoken';
 
-
 export async function signup(req, res) {
   const {email, password, fullName} = req.body;
 
@@ -21,7 +20,7 @@ export async function signup(req, res) {
       return res.status(400).json({ message: "Invalid email format" });
     }
 
-    const existingUser = User.findOne({ email });
+    const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: 'Email already exists, please use a different email' });
     }
@@ -113,4 +112,50 @@ export async function login(req, res) {
 export async function logout(req, res) {
   res.clearCookie('token');
   res.status(200).json({success: true, message: 'Logout successful'});
+}
+
+export async function onBoard(req, res) {
+  try {
+    const userId = req.user._id;
+    const { fullName, bio, nativeLanguage, learningLanguage, location } = req.body;
+
+    if (!fullName || !bio || !nativeLanguage || !learningLanguage || !location) {
+      return res.status(400).json({ 
+        message: 'All fields are required' ,
+        misssing: [
+          !fullName && 'fullName',
+          !bio && 'bio',
+          !nativeLanguage && 'nativeLanguage',
+          !learningLanguage && 'learningLanguage',
+          !location && 'location',
+        ].filter(Boolean),
+      });
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(userId,{
+      ...req.body,
+      isOnboarded: true,
+    }, { new: true });
+
+    if(!updatedUser) {
+      return res.status(404).json({message: 'User not found'});
+    }
+
+    try {
+      await upsertStreamUser({
+        id: updatedUser._id.toString(),
+        name: updatedUser.fullName,
+        image: updatedUser.profilePicture || " ",
+      });
+    } catch (error) {
+      console.error('Error upserting Stream user during onboarding:', error);
+      return res.status(500).json({message: 'Error updating Stream user profile'});
+    }
+
+    res.status(200).json({success: true, message: 'User onboarded successfully', user: updatedUser});
+  } 
+  catch (error) {
+    console.error('Error during onboarding:', error);
+    res.status(500).json({message: 'Internal server error'});
+  }
 }
