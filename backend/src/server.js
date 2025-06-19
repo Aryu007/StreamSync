@@ -4,6 +4,7 @@ import userRoutes from './routes/user.route.js'; // Importing the user routes
 import chatRoutes from './routes/chat.route.js'; // Importing the chat routes
 import connectDB from './lib/db.js'; // Importing the database connection
 import cookieParser from 'cookie-parser'; // Middleware to parse cookies
+import cors from 'cors'; // Middleware for CORS
 
 // Load environment variables from .env file
 import dotenv from 'dotenv';
@@ -12,6 +13,12 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT;
 
+app.use(cors(
+  {
+    origin: 'http://localhost:5173', // Allow requests from the client URL
+    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+  }
+)); // Enable CORS for all routes
 app.use(cookieParser()); // Middleware to parse cookies
 app.use(express.json()); // Middleware to parse JSON bodies
 
