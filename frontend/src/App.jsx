@@ -11,11 +11,12 @@ import { Toaster } from "react-hot-toast";
 import PageLoader from "./components/PageLoader.jsx";
 import useAuthUser from "./hooks/useAuthUser.js";
 import Layout  from "./components/Layout.jsx";
+import { useThemeStore } from "./store/useThemeStore.js";
 
 const App = () => {
   //Tanstack Query
   const { isLoading, authUser } = useAuthUser();
-
+  const {theme} = useThemeStore();
   const isAuthenticated = Boolean(authUser);
   const isOnboarded = authUser?.isOnboarded;
 
@@ -23,7 +24,7 @@ const App = () => {
     return <PageLoader />;
   }
   return (
-    <div className="App">
+    <div className="App" data-theme={theme}>
       <Routes>
         <Route
           path="/"
