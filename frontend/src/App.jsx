@@ -10,6 +10,7 @@ import ChatPage from "./pages/ChatPage.jsx";
 import { Toaster } from "react-hot-toast";
 import PageLoader from "./components/PageLoader.jsx";
 import useAuthUser from "./hooks/useAuthUser.js";
+import Layout  from "./components/Layout.jsx";
 
 const App = () => {
   //Tanstack Query
@@ -28,7 +29,9 @@ const App = () => {
           path="/"
           element={
             isAuthenticated && isOnboarded ? (
-              <HomePage />
+              <Layout showSidebar={true}>
+                <HomePage />
+              </Layout>
             ) : (
               <Navigate to={!isAuthenticated ? "/login" : "onboarding"} />
             )
