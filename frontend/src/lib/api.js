@@ -50,7 +50,7 @@ export async function sendFriendRequest(userId) {
 }
 
 export async function getFriendRequests() {
-  const response = await axiosInstance.get("/users/friend-requests");
+  const response = await axiosInstance.get("/users/friendsrequests");
   return response.data;
 }
 
