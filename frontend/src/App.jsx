@@ -88,10 +88,10 @@ const App = () => {
               !isOnboarded ? (
                 <OnboardingPage />
               ) : (
-                <Navigate to={"/"} />
+                <Navigate to="/" />
               )
             ) : (
-              <Navigate to={"/login"} />
+              <Navigate to="/login" />
             )
           }
         />

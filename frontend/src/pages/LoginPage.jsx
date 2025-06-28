@@ -1,33 +1,33 @@
-import { useState } from 'react'
-import { Link } from 'react-router';
-import { Laptop } from 'lucide-react'; // Adjust the import path as necessary
-import useLogin from '../hooks/useLogin.js'; // Adjust the import path as necessary
+import { useState } from "react";
+import { ShipWheelIcon } from "lucide-react";
+import { Link } from "react-router";
+import useLogin from "../hooks/useLogin";
 
 const LoginPage = () => {
   const [loginData, setLoginData] = useState({
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   });
 
   // This is how we did it at first, without using our custom hook
   // const queryClient = useQueryClient();
-  // const {mutate : loginMutation, isPending, error} = useMutation({
+  // const {
+  //   mutate: loginMutation,
+  //   isPending,
+  //   error,
+  // } = useMutation({
   //   mutationFn: login,
-  //   onSuccess: () => {
-  //     queryClient.invalidateQueries({ queryKey: ['authUser'] });
-  //   },
-  //   onError: (error) => {
-  //     console.error("Login error:", error);
-  //     // Handle error appropriately, e.g., show a toast notification
-  //   }
+  //   onSuccess: () => queryClient.invalidateQueries({ queryKey: ["authUser"] }),
   // });
 
-  const {loginMutation, isPending, error} = useLogin();
+  // This is how we did it using our custom hook - optimized version
+  const { isPending, error, loginMutation } = useLogin();
+
   const handleLogin = (e) => {
     e.preventDefault();
     loginMutation(loginData);
   };
-  
+
   return (
     <div
       className="h-screen flex items-center justify-center p-4 sm:p-6 md:p-8"
@@ -38,9 +38,9 @@ const LoginPage = () => {
         <div className="w-full lg:w-1/2 p-4 sm:p-8 flex flex-col">
           {/* LOGO */}
           <div className="mb-4 flex items-center justify-start gap-2">
-            <Laptop className="size-9 text-primary" />
+            <ShipWheelIcon className="size-9 text-primary" />
             <span className="text-3xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary  tracking-wider">
-              StreamSync
+              Streamify
             </span>
           </div>
 
@@ -120,7 +120,7 @@ const LoginPage = () => {
           <div className="max-w-md p-8">
             {/* Illustration */}
             <div className="relative aspect-square max-w-sm mx-auto">
-              <img src="/learning.png" alt="Language connection illustration" className="w-full h-full" />
+              <img src="/i.png" alt="Language connection illustration" className="w-full h-full" />
             </div>
 
             <div className="text-center space-y-3 mt-6">
@@ -133,7 +133,6 @@ const LoginPage = () => {
         </div>
       </div>
     </div>
-  )
-}
-
+  );
+};
 export default LoginPage;

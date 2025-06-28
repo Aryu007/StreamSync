@@ -4,8 +4,8 @@ import { getStreamToken } from '../controllers/chat.controller.js';
 
 const router = express.Router();
 
-router.use(protectRoute); // Apply the protectRoute middleware to all routes in this router
+// router.use(protectRoute); // Apply the protectRoute middleware to all routes in this router
 
-router.get('/token',getStreamToken);
+router.get('/token',protectRoute,getStreamToken);
 
 export default router;

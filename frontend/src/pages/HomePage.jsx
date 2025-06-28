@@ -1,46 +1,52 @@
-import { useState , useEffect} from 'react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { getOutgoingFriendReqs, getRecommendedUsers, getUserFriends, sendFriendRequest } from '../lib/api';
-import { Link } from 'react-router';
-import { UsersIcon, UserPlusIcon, CheckCircleIcon, MapPinIcon } from 'lucide-react';
-import FriendCard , { getLanguageFlag } from '../components/FriendCard.jsx';
-import NoFriendsFound from '../components/NoFriendsFound.jsx';
-import { capitialize } from '../lib/utils.js';
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useEffect, useState } from "react";
+import {
+  getOutgoingFriendReqs,
+  getRecommendedUsers,
+  getUserFriends,
+  sendFriendRequest,
+} from "../lib/api";
+import { Link } from "react-router";
+import { CheckCircleIcon, MapPinIcon, UserPlusIcon, UsersIcon } from "lucide-react";
+
+import { capitialize } from "../lib/utils";
+
+import FriendCard, { getLanguageFlag } from "../components/FriendCard";
+import NoFriendsFound from "../components/NoFriendsFound";
 
 const HomePage = () => {
   const queryClient = useQueryClient();
+  const [outgoingRequestsIds, setOutgoingRequestsIds] = useState(new Set());
 
-  const [outgoingRequestsIds , setOutgoingRequestIds] = useState(new Set());
-
-  const {data : friends = [] , isLoading : loadingFriends} = useQuery({
-    queryKey : ['friends'],
-    queryFn : getUserFriends,
+  const { data: friends = [], isLoading: loadingFriends } = useQuery({
+    queryKey: ["friends"],
+    queryFn: getUserFriends,
   });
 
-  const {data : recommendedUsers = [], isLoading : loadingUsers} = useQuery({
-    queryKey : ['recommendedUsers'],
-    queryFn : getRecommendedUsers,
+  const { data: recommendedUsers = [], isLoading: loadingUsers } = useQuery({
+    queryKey: ["users"],
+    queryFn: getRecommendedUsers,
   });
 
-  const {data : outgoingFriendReqs = []} = useQuery({
-    queryKey : ['outgoingFriendReqs'],
-    queryFn : getOutgoingFriendReqs,
-  })
+  const { data: outgoingFriendReqs } = useQuery({
+    queryKey: ["outgoingFriendReqs"],
+    queryFn: getOutgoingFriendReqs,
+  });
 
-  const {mutate : sendRequestMutation , isPending} = useMutation({
-    mutationFn : sendFriendRequest,
-    onSuccess : () => queryClient.invalidateQueries({ queryKey: ['outgoingFrindReqs'] }),
-  })
+  const { mutate: sendRequestMutation, isPending } = useMutation({
+    mutationFn: sendFriendRequest,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["outgoingFriendReqs"] }),
+  });
 
   useEffect(() => {
     const outgoingIds = new Set();
-    if(outgoingFriendReqs && outgoingFriendReqs.length > 0) {
-      outgoingFriendReqs.forEach(req => {
+    if (outgoingFriendReqs && outgoingFriendReqs.length > 0) {
+      outgoingFriendReqs.forEach((req) => {
         outgoingIds.add(req.recipient._id);
-      })
-      setOutgoingRequestIds(outgoingIds);
+      });
+      setOutgoingRequestsIds(outgoingIds);
     }
-  },[outgoingFriendReqs]);
+  }, [outgoingFriendReqs]);
 
   return (
     <div className="p-4 sm:p-6 lg:p-8">
@@ -150,7 +156,7 @@ const HomePage = () => {
                             Send Friend Request
                           </>
                         )}
-                      </button>
+                      </button> 
                     </div>
                   </div>
                 );
@@ -160,7 +166,7 @@ const HomePage = () => {
         </section>
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default HomePage;
