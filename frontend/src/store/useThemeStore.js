@@ -1,9 +1,9 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 export const useThemeStore = create((set) => ({
-    theme : localStorage.getItem('theme') || 'night', // Default to 'light' theme if not set
-    setTheme: (newTheme) => {
-        localStorage.setItem('theme', newTheme); // Save theme to localStorage
-        set({ theme: newTheme }); // Update state
-    },
-}))
+  theme: localStorage.getItem("streamify-theme") || "night",
+  setTheme: (theme) => {
+    localStorage.setItem("streamify-theme", theme);
+    set({ theme });
+  },
+}));

@@ -1,25 +1,26 @@
-import { useQueryClient , useQuery, useMutation} from '@tanstack/react-query';
-import { acceptFriendRequest, getFriendRequests } from '../lib/api';
-import NoNotificationsFound from '../components/NoNotificationsFound.jsx';
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { acceptFriendRequest, getFriendRequests } from "../lib/api";
+import { BellIcon, ClockIcon, MessageSquareIcon, UserCheckIcon } from "lucide-react";
+import NoNotificationsFound from "../components/NoNotificationsFound";
 
 const NotificationsPage = () => {
   const queryClient = useQueryClient();
 
-  const { data : friendRequests, isLoading} = useQuery({
-    queryKey : ['friendRequests'],
-    queryFn : getFriendRequests
-  })
+  const { data: friendRequests, isLoading } = useQuery({
+    queryKey: ["friendRequests"],
+    queryFn: getFriendRequests,
+  });
 
-  const {mutate : acceptRequestMutation , isPending} = useMutation({
-    mutationFn : acceptFriendRequest,
+  const { mutate: acceptRequestMutation, isPending } = useMutation({
+    mutationFn: acceptFriendRequest,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['friendRequests'] });
-      queryClient.invalidateQueries({ queryKey: ['friends'] });
+      queryClient.invalidateQueries({ queryKey: ["friendRequests"] });
+      queryClient.invalidateQueries({ queryKey: ["friends"] });
     },
-  })
+  });
 
-  const incomingRequests = friendRequests?.incomingRequests || [];
-  const acceptedRequests = friendRequests?.acceptedRequests || [];
+  const incomingRequests = friendRequests?.incomingReqs || [];
+  const acceptedRequests = friendRequests?.acceptedReqs || [];
 
   return (
     <div className="p-4 sm:p-6 lg:p-8">
@@ -129,6 +130,5 @@ const NotificationsPage = () => {
       </div>
     </div>
   );
-}
-
+};
 export default NotificationsPage;

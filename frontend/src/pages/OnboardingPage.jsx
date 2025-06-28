@@ -1,44 +1,42 @@
-import toast from 'react-hot-toast';
-import  useAuthUser  from '../hooks/useAuthUser.js';
-import { useState } from 'react';
-import { useMutation } from '@tanstack/react-query';
-import { useQueryClient } from '@tanstack/react-query';
-import { completeOnboarding } from '../lib/api';
-import { CameraIcon, MapPinIcon, ShipWheelIcon, LoaderIcon, ShuffleIcon } from 'lucide-react';
-import { LANGUAGES } from '../constants/index.js'; 
+import { useState } from "react";
+import useAuthUser from "../hooks/useAuthUser";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import toast from "react-hot-toast";
+import { completeOnboarding } from "../lib/api";
+import { LoaderIcon, MapPinIcon, ShipWheelIcon, ShuffleIcon } from "lucide-react";
+import { LANGUAGES } from "../constants";
 
 const OnboardingPage = () => {
   const { authUser } = useAuthUser();
   const queryClient = useQueryClient();
 
-
   const [formState, setFormState] = useState({
-    fullName: authUser?.fullName || '',
-    profilePicture: authUser?.profilePicture || '',
-    bio: authUser?.bio || '',
-    nativeLanguage: authUser?.nativeLanguage || '',
-    learningLanguage: authUser?.learningLanguage || '',
-    location: authUser?.location || '',
+    fullName: authUser?.fullName || "",
+    bio: authUser?.bio || "",
+    nativeLanguage: authUser?.nativeLanguage || "",
+    learningLanguage: authUser?.learningLanguage || "",
+    location: authUser?.location || "",
+    profilePicture: authUser?.profilePicture || "",
   });
 
-  const { mutate : onboardingMutation , isPending} = useMutation({
-    mutateFn : completeOnboarding,
-    onSuccess : () => {
-      toast.success('Profile onboarded Successfully!');
-
-      // Update the authUser in the query cache
-      queryClient.invalidateQueries({ queryKey: ['authUser'] });
+  const { mutate: onboardingMutation, isPending } = useMutation({
+    mutationFn: completeOnboarding,
+    onSuccess: () => {
+      toast.success("Profile onboarded successfully");
+      queryClient.invalidateQueries({ queryKey: ["authUser"] });
     },
-    onError: (error) => {
-      toast.error(error.response?.data?.message || 'Failed to complete onboarding. Please try again.');
-    }
-  });
 
+    onError: (error) => {
+      toast.error(error.response.data.message);
+    },
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     onboardingMutation(formState);
-  }
+  };
+
   const handleRandomAvatar = () => {
     const idx = Math.floor(Math.random() * 100) + 1; // 1-100 included
     const randomAvatar = `https://avatar.iran.liara.run/public/${idx}.png`;
@@ -189,7 +187,6 @@ const OnboardingPage = () => {
         </div>
       </div>
     </div>
-  )
-}
-
+  );
+};
 export default OnboardingPage;

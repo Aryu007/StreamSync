@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Laptop } from "lucide-react";
+import { ShipWheelIcon } from "lucide-react";
 import { Link } from "react-router";
 
 import useSignUp from "../hooks/useSignUp";
@@ -40,23 +40,18 @@ const SignUpPage = () => {
         <div className="w-full lg:w-1/2 p-4 sm:p-8 flex flex-col">
           {/* LOGO */}
           <div className="mb-4 flex items-center justify-start gap-2">
-            <Laptop className="size-9 text-primary" />
+            <ShipWheelIcon className="size-9 text-primary" />
             <span className="text-3xl font-bold font-mono bg-clip-text text-transparent bg-gradient-to-r from-primary to-secondary tracking-wider">
-              StreamSync
+              Streamify
             </span>
           </div>
 
           {/* ERROR MESSAGE IF ANY */}
           {error && (
             <div className="alert alert-error mb-4">
-              <span>
-                {error.response?.data?.message ??
-                  error.message ??
-                  "Something went wrong. Please try again."}
-              </span>
+              <span>{error.response.data.message}</span>
             </div>
           )}
-
 
           <div className="w-full">
             <form onSubmit={handleSignup}>
@@ -64,7 +59,7 @@ const SignUpPage = () => {
                 <div>
                   <h2 className="text-xl font-semibold">Create an Account</h2>
                   <p className="text-sm opacity-70">
-                    Join StreamSync and start your language learning adventure!
+                    Join Streamify and start your language learning adventure!
                   </p>
                 </div>
 
@@ -156,7 +151,7 @@ const SignUpPage = () => {
           <div className="max-w-md p-8">
             {/* Illustration */}
             <div className="relative aspect-square max-w-sm mx-auto">
-              <img src="/learning.png" alt="Language connection illustration" className="w-full h-full" />
+              <img src="/i.png" alt="Language connection illustration" className="w-full h-full" />
             </div>
 
             <div className="text-center space-y-3 mt-6">
