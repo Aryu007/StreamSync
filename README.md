@@ -58,7 +58,7 @@ StreamSync/
 
 ### Live Demo 
 
-- [Check out the live version of the project here:](https://streamsync-bf0a.onrender.com)
+- [StreamSync](https://streamsync-bf0a.onrender.com)
 
 ### Setup
 
@@ -96,7 +96,7 @@ cd frontend
 npm run dev
 ```
 
-Frontend will be available at [http://localhost:5173](http://localhost:5173).
+Frontend will be available at http://localhost:5173.
 
 ## Build for Production
 
