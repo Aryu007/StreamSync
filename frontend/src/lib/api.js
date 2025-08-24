@@ -29,7 +29,7 @@ export const completeOnboarding = async (userData) => {
   return response.data;
 };
 
-export async function getUserFriends() {
+export async function getMyFriends() {
   const response = await axiosInstance.get("/users/friends");
   return response.data;
 }
